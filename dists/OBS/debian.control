@@ -1,0 +1,24 @@
+Source: midgard-python
+Section: python
+Priority: optional
+Maintainer: Piotr Pokora <piotrek.pokora@gmail.com>
+Standards-Version: 3.5.2
+Architecture: any
+Build-Depends: debhelper (>=4.0), libmidgard2-dev (>=9.09), python-dev, python-gobject-dev, python-support, cdbs, python-all-dev, python-setuptools
+
+Package: python-midgard2
+Section: python
+Architecture: any
+Depends: python, python-gobject, midgard2-common, ${shlibs:Depends}, ${python:Depends}
+Conflicts: 
+Replaces:
+Description: Python bindings for Midgard Content Repository
+ .
+ This package provides Python bindings for Midgard2.
+ .
+ Midgard2 is an Open Source Content Repository. It provides an object-oriented  
+ and replicated environment for building data-intensive applications for both
+ web and the desktop. Midgard2 is built on the GNOME stack of libraries like 
+ GLib and libgda. Communications between applications written in the different 
+ languages happen over D-Bus.
+ .
