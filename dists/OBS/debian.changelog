@@ -1,0 +1,35 @@
+midgard-python (9.09.99-1) unstable; urgency=low
+
+  * New upstream
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 18 Nov 2009 13:03:02 +0100
+
+midgard-python (9.09-1) unstable; urgency=low
+
+  * New upstream
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 18 Nov 2009 11:44:49 +0100
+
+midgard-python (9.03.99) unstable; urgency=low
+
+  * Initial release
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Thu, 15 Apr 2009 15:42:36 +0100
+
+midgard-python (9.03.0-1+RC) unstable; urgency=low
+
+  * Initial release
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Thu, 15 Apr 2009 12:35:23 +0100
+
+midgard-python (9.03.0beta2) unstable; urgency=low
+
+  * Initial release
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Mon, 16 Mar 2009 19:44:10 +0100
+
+midgard-python (9.03.0beta1) unstable; urgency=low
+
+  * Initial release
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Sat, 18 Oct 2008 15:03:59 +0100
