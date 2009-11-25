@@ -138,6 +138,17 @@ pymidgard_connection_open_config(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
+pymidgard_connection_is_connected (PyGObject *self, PyObject *args)
+{
+	CONNECTION_DEBUG("is_connected");
+		
+	if (midgard_connection_is_connected (MIDGARD_CONNECTION(self->obj)))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
 pymidgard_connection_set_loglevel(PyGObject *self, PyObject *args)
 {
 	CONNECTION_DEBUG("set_loglevel");
@@ -230,6 +241,7 @@ pymidgard_connection_list_auth_types(PyGObject *self, PyObject *args)
 static PyMethodDef pymidgard_connection_methods[] = {
 	{ "open", (PyCFunction)pymidgard_connection_open, METH_VARARGS },
 	{ "open_config", (PyCFunction)pymidgard_connection_open_config, METH_VARARGS },
+	{ "is_connected", (PyCFunction)pymidgard_connection_is_connected, METH_NOARGS },
 	{ "set_loglevel", (PyCFunction)pymidgard_connection_set_loglevel, METH_VARARGS },
 	{ "get_error", (PyCFunction)pymidgard_connection_get_error, METH_VARARGS },
 	{ "get_error_string", (PyCFunction)pymidgard_connection_get_error_string, METH_VARARGS },
