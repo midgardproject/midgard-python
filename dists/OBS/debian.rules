@@ -23,7 +23,6 @@ build-stamp:
 	dh_testdir
 	set -e; \
 		for python in $(PYVERS); do \
-		python=$$(echo $$python | sed "s/$(PYDEF)/python/"); \
 		$$python setup.py build; \
 	done
 	touch build-stamp
@@ -31,7 +30,6 @@ build-stamp:
 clean::
 	dh_testdir
 	for python in $(PYVERS); do \
-		python=$$(echo $$python | sed "s/$(PYDEF)/python/"); \
 		$$python setup.py clean; \
 	done
 	rm -rf build-stamp build
@@ -45,7 +43,6 @@ install: build
 	
 	set -e; \
 	for python in $(PYVERS); do \
-		python=$$(echo $$python | sed "s/$(PYDEF)/python/"); \
 		$$python setup.py install --root=debian/python-midgard2; \
 	done
 	
