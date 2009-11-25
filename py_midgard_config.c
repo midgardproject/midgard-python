@@ -166,80 +166,6 @@ pymidgard_config_list_files(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_config_create_midgard_tables(PyGObject *self, PyObject *args) 
-{
-	CONFIG_DEBUG("create_midgard_tables");
-
-	MidgardConnection *mgd =
-		_py_midgard_connection_singleton_get();
-
-	if(!mgd)
-		return NULL;
-
-	if(midgard_config_create_midgard_tables(
-				MIDGARD_CONFIG(self->obj), mgd))
-		Py_RETURN_TRUE;
-	
-	Py_RETURN_FALSE;
-}
-
-static PyObject *
-pymidgard_config_create_class_table(PyGObject *self, PyObject *args)
-{
-	CONFIG_DEBUG("create_class_table");
-
-	gchar *cname;
-	
-	if(!PyArg_ParseTuple(args, "s", &cname))
-		return NULL;
-
-	MidgardConnection *mgd =
-		_py_midgard_connection_singleton_get();
-	
-	if(!mgd)
-		return NULL;
-
-	MidgardObjectClass *klass = MIDGARD_OBJECT_GET_CLASS_BY_NAME(cname);
-
-	if(!klass)
-		return NULL;
-
-	if(midgard_config_create_class_table(
-				MIDGARD_CONFIG(self->obj), klass, mgd))
-		Py_RETURN_TRUE;
-	
-	Py_RETURN_FALSE;
-}
-
-static PyObject *
-pymidgard_config_update_class_table(PyGObject *self, PyObject *args)
-{
-	CONFIG_DEBUG("update_class_table");
-
-	gchar *cname;
-	
-	if(!PyArg_ParseTuple(args, "s", &cname))
-		return NULL;
-
-	MidgardConnection *mgd =
-		_py_midgard_connection_singleton_get();
-	
-	if(!mgd)
-		return NULL;
-
-	MidgardObjectClass *klass = MIDGARD_OBJECT_GET_CLASS_BY_NAME(cname);
-
-	if(!klass)
-		return NULL;
-
-	if(midgard_config_update_class_table(
-				MIDGARD_CONFIG(self->obj), klass, mgd))
-		Py_RETURN_TRUE;
-	
-	Py_RETURN_FALSE;
-}
-
-static PyObject *
 pymidgard_config_create_blobdir(PyGObject *self, PyObject *args) 
 {
 	CONFIG_DEBUG("create_blobdir");
@@ -258,9 +184,6 @@ static PyMethodDef pymidgard_config_methods[] = {
 	{ "read_data", (PyCFunction)pymidgard_config_read_data, METH_VARARGS },
 	{ "list_files", (PyCFunction)pymidgard_config_list_files, METH_VARARGS },
 	{ "save_file", (PyCFunction)pymidgard_config_save_file, METH_VARARGS },
-	{ "create_midgard_tables", (PyCFunction)pymidgard_config_create_midgard_tables, METH_NOARGS },
-	{ "create_class_table", (PyCFunction)pymidgard_config_create_class_table, METH_VARARGS },
-	{ "update_class_table", (PyCFunction)pymidgard_config_update_class_table, METH_VARARGS },
 	{ "create_blobdir", (PyCFunction)pymidgard_config_create_blobdir, METH_NOARGS },
 	{ NULL, NULL, 0 }
 };
