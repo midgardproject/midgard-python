@@ -251,6 +251,29 @@ pymidgard_object_class_has_metadata(PyGObject *self, PyObject *args)
 	Py_RETURN_FALSE;
 }
 
+static PyObject *
+pymidgard_object_class_get_schema_value (PyGObject *self, PyObject *args) 
+{
+	//CHECK_MGD;
+	const gchar *classname;
+	const gchar *name;
+
+	if (!PyArg_ParseTuple (args, "ss", &classname, &name))
+		return NULL;
+	
+	GObjectClass *klass = g_type_class_peek (g_type_from_name (classname));
+	if (klass == NULL)
+		return NULL;
+
+	const gchar *value = 
+		midgard_object_class_get_schema_value (MIDGARD_OBJECT_CLASS (klass), name);
+
+	if (value == NULL)
+		Py_RETURN_NONE;
+
+	return Py_BuildValue ("s", value); 
+}
+
 static PyMethodDef pymidgard_object_class_methods[] = {
 	{ "factory",
 		(PyCFunction)pymidgard_object_class_factory, METH_VARARGS | METH_STATIC},
@@ -270,6 +293,8 @@ static PyMethodDef pymidgard_object_class_methods[] = {
 		(PyCFunction)pymidgard_object_class_undelete, METH_VARARGS | METH_STATIC},
 	{ "has_metadata",
 		(PyCFunction)pymidgard_object_class_has_metadata, METH_VARARGS | METH_STATIC},
+	{ "get_schema_value", 
+		(PyCFunction)pymidgard_object_class_get_schema_value, METH_VARARGS | METH_STATIC},
 	{ NULL, NULL, 0 }
 };
 
