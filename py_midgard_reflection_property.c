@@ -193,6 +193,21 @@ pymidgard_reflection_property_get_user_value(PyGObject *self, PyObject *args)
         return Py_BuildValue("s", value);
 }
 
+static PyObject *
+pymidgard_reflection_property_is_private(PyGObject *self, PyObject *args) 
+{
+	MRP_DEBUG("is_private");
+	const gchar *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return NULL;
+
+	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
+	if(midgard_reflection_property_is_private(mrp, name))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
 
 static PyMethodDef pymidgard_rp_methods[] = {
 	{ "get_midgard_type", (PyCFunction)pymidgard_reflection_property_get_midgard_type, METH_VARARGS },
@@ -203,6 +218,7 @@ static PyMethodDef pymidgard_rp_methods[] = {
 	{ "get_link_target", (PyCFunction)pymidgard_reflection_property_get_link_target, METH_VARARGS },
 	{ "description", (PyCFunction)pymidgard_reflection_property_description, METH_VARARGS },
 	{ "get_user_value", (PyCFunction)pymidgard_reflection_property_get_user_value, METH_VARARGS },
+	{ "is_private", (PyCFunction)pymidgard_reflection_property_is_private, METH_VARARGS },
 	{ NULL, NULL, 0 }
 };
 
