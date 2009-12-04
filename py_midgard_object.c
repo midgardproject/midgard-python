@@ -162,7 +162,7 @@ static int __schema_object_construct(PyGObject *self, PyObject *args, PyObject *
 
 	MidgardConnection *mgd = 
 		_py_midgard_connection_singleton_get();
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(!mgd)
 		PyErr_SetString(PyExc_RuntimeError, "Failed to get midgard connection");
@@ -216,7 +216,7 @@ pymidgard_object_create(PyGObject *self, PyObject *args)
 {
 	MGDOBJECT_DEBUG("create");
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_create(mobj))
 		Py_RETURN_TRUE;
@@ -232,7 +232,7 @@ pymidgard_object_get_by_id(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "i", &id))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_get_by_id(mobj, id))
 		Py_RETURN_TRUE;
@@ -248,7 +248,7 @@ pymidgard_object_get_by_guid(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &guid))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_get_by_guid(mobj, guid))
 		Py_RETURN_TRUE;
@@ -263,7 +263,7 @@ pymidgard_object_update(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_update(mobj))
 		Py_RETURN_TRUE;
@@ -278,7 +278,7 @@ pymidgard_object_delete(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_delete(mobj))
 		Py_RETURN_TRUE;
@@ -293,7 +293,7 @@ pymidgard_object_purge(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_purge(mobj))
 		Py_RETURN_TRUE;
@@ -310,7 +310,7 @@ pymidgard_object_is_in_parent_tree(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "ii", &root_id, &id))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_is_in_parent_tree(mobj, root_id, id))
 		Py_RETURN_TRUE;
@@ -327,7 +327,7 @@ pymidgard_object_is_in_tree(PyGObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "ii", &root_id, &id))
 		return NULL;
 
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_is_in_tree(mobj, root_id, id))
 		Py_RETURN_TRUE;
@@ -340,7 +340,7 @@ pymidgard_object_has_dependents(PyGObject *self, PyObject *args)
 {
 	MGDOBJECT_DEBUG("has_dependents");
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_has_dependents(mobj))
 		Py_RETURN_TRUE;
@@ -355,8 +355,8 @@ pymidgard_object_get_parent(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
-	MgdObject *parent = 
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *parent = 
 		midgard_object_get_parent(mobj);
 	
 	if(parent) 
@@ -372,7 +372,7 @@ pymidgard_object_parent(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 	const gchar *parent = 
 		midgard_object_parent(mobj);
 
@@ -388,7 +388,7 @@ pymidgard_object_list(PyGObject *self, PyObject *args)
 
 	guint i = 0;
 	guint n_objects;
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 	GObject **objects = midgard_object_list(mobj, &n_objects);
 	
 	if(objects == NULL) {
@@ -419,7 +419,7 @@ pymidgard_object_list_children(PyGObject *self, PyObject *args)
 
 	guint i = 0;
 	guint n_objects;
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 	GObject **objects = midgard_object_list_children(mobj, childcname, &n_objects);
 
 	if(objects == NULL) {
@@ -448,7 +448,7 @@ pymidgard_object_get_by_path(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &path))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_get_by_path(mobj, path))
 		Py_RETURN_TRUE;
@@ -464,7 +464,7 @@ pymidgard_object_approve(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_approve(mobj))
 		Py_RETURN_TRUE;
@@ -480,7 +480,7 @@ pymidgard_object_is_approved(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_is_approved(mobj))
 		Py_RETURN_TRUE;
@@ -496,7 +496,7 @@ pymidgard_object_unapprove(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_unapprove(mobj))
 		Py_RETURN_TRUE;
@@ -512,7 +512,7 @@ pymidgard_object_lock(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_lock(mobj))
 		Py_RETURN_TRUE;
@@ -528,7 +528,7 @@ pymidgard_object_is_locked(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_is_locked(mobj))
 		Py_RETURN_TRUE;
@@ -544,7 +544,7 @@ pymidgard_object_unlock(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *mobj = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
 	if(midgard_object_unlock(mobj))
 		Py_RETURN_TRUE;

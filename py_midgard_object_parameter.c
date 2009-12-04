@@ -48,7 +48,7 @@ pymidgard_object_get_parameter(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "ss", &domain, &name))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	const GValue *gval = 
 		midgard_object_get_parameter(mobject, domain, name);
@@ -72,7 +72,7 @@ pymidgard_object_set_parameter(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "ss|O", &domain, &name, &pvalue))
 		                return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 	
 	if(pvalue != NULL) {
 		
@@ -95,7 +95,7 @@ pymidgard_object_has_parameters(PyGObject *self, PyObject *args)
 {
 	PARAM_DEBUG("has_parameters");
 	
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 	
 	gboolean rv = midgard_object_has_parameters(mobject);
 
@@ -115,7 +115,7 @@ pymidgard_object_delete_parameters(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "O", &props))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
@@ -139,7 +139,7 @@ pymidgard_object_purge_parameters(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "O", &props))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
@@ -165,9 +165,9 @@ pymidgard_object_list_parameters(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "|s", &domain))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
-	MgdObject **objects = midgard_object_list_parameters(mobject, domain);
+	MidgardObject **objects = midgard_object_list_parameters(mobject, domain);
 
 	if(!objects)
 		return PyTuple_New(i);
@@ -194,12 +194,12 @@ pymidgard_object_find_parameters(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "O", &props))
 		return NULL;
 	
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params, i = 0;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
 
-	MgdObject **objects = midgard_object_find_parameters(mobject, n_params, params);
+	MidgardObject **objects = midgard_object_find_parameters(mobject, n_params, params);
 
 	_FREE_PARAMETERS;
 

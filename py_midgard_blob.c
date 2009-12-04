@@ -44,7 +44,7 @@ __blob_constructor(PyGObject *self, PyObject *args, PyObject *kwargs)
 	if(!PyArg_ParseTuple(args,"O!|s:__init__", pytype, &pvalue, &encoding))
 		return -1;
 	
-	MgdObject *att = MIDGARD_OBJECT(((PyGObject *)pvalue)->obj);
+	MidgardObject *att = MIDGARD_OBJECT(((PyGObject *)pvalue)->obj);
 	MidgardBlob *blob = midgard_blob_new(att, encoding);
 		
 	if(!blob) 

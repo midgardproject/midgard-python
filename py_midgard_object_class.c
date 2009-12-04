@@ -30,7 +30,7 @@ pymidgard_object_class_factory(PyGObject *self, PyObject *args)
 	const gchar *classname;
         // const gchar *guid;
         // guint id;
-	MgdObject *mobject = NULL; 
+	MidgardObject *mobject = NULL; 
 
 	if(!PyArg_ParseTuple(args, "s|O", &classname, &pvalue))
 		return NULL;
@@ -181,7 +181,7 @@ pymidgard_object_class_get_object_by_guid(PyGObject *self, PyObject *args)
 	MidgardConnection *mgd =
 		_py_midgard_connection_singleton_get();
 
-	MgdObject *mobject = midgard_object_class_get_object_by_guid(mgd, guid);
+	MidgardObject *mobject = midgard_object_class_get_object_by_guid(mgd, guid);
 
 	/* TODO , check if this migh tbe optimized */
 	GValue gval = {0, };
@@ -204,7 +204,7 @@ pymidgard_object_class_get_object_by_path(PyGObject *self, PyObject *args)
 	MidgardConnection *mgd =
 		_py_midgard_connection_singleton_get();
 
-	MgdObject *mobject = 
+	MidgardObject *mobject = 
 		midgard_object_class_get_object_by_path(mgd, classname, path);
 
 	/* TODO , check if this might be optimized */

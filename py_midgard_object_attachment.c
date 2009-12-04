@@ -49,7 +49,7 @@ pymidgard_object_delete_attachments(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "O", &props))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
@@ -69,7 +69,7 @@ pymidgard_object_has_attachments(PyGObject *self, PyObject *args)
 {
 	ATTACHMENT_DEBUG("has_attachments");
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 	
 	gboolean rv = midgard_object_has_attachments(mobject);
 
@@ -90,7 +90,7 @@ pymidgard_object_purge_attachments(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "|bO", &delete_blobs, &props))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
@@ -115,9 +115,9 @@ pymidgard_object_list_attachments(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
-	MgdObject **objects = midgard_object_list_attachments(mobject);
+	MidgardObject **objects = midgard_object_list_attachments(mobject);
 
 	if(!objects)
 		return PyTuple_New(i);
@@ -144,12 +144,12 @@ pymidgard_object_find_attachments(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "O", &props))
 		return NULL;
 	
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
 
 	guint n_params, i = 0;
 	GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
 
-	MgdObject **objects = midgard_object_find_attachments(mobject, n_params, params);
+	MidgardObject **objects = midgard_object_find_attachments(mobject, n_params, params);
 
 	_FREE_PARAMETERS;
 
@@ -180,8 +180,8 @@ pymidgard_object_create_attachment(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "|s|s|s", &name, &title, &mimetype))
 		return NULL;
 	
-	MgdObject *mobject = MIDGARD_OBJECT(self->obj);
-	MgdObject *att = midgard_object_create_attachment(mobject, name, title, mimetype);
+	MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
+	MidgardObject *att = midgard_object_create_attachment(mobject, name, title, mimetype);
 
 	if(att)
 		return Py_BuildValue("O", pygobject_new(G_OBJECT(att)));

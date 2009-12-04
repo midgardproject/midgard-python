@@ -34,7 +34,7 @@ static PyObject *
 pymidgard_replicator_serialize(PyGObject *self, PyObject *args) 
 {
 	REPLICATOR_DEBUG("serialize");
-        // MgdObject *mobject; 
+        // MidgardObject *mobject; 
 	PyObject *pobject; 
 
 	if(!PyArg_ParseTuple(args, "O", &pobject))

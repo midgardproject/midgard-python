@@ -166,7 +166,7 @@ pymidgard_user_get_person(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, ""))
 		return NULL;
 	
-	MgdObject *person = midgard_user_get_person(MIDGARD_USER(self->obj));
+	MidgardObject *person = midgard_user_get_person(MIDGARD_USER(self->obj));
 	
 	if(person == NULL)
 		Py_RETURN_NONE;
@@ -241,7 +241,7 @@ pymidgard_user_query(PyGObject *self, PyObject *args)
         if(!PyArg_ParseTuple(args, "O", &props))
 	                return NULL;
 
-        // MgdObject *mobject = MIDGARD_OBJECT(self->obj);
+        // MidgardObject *mobject = MIDGARD_OBJECT(self->obj);
         guint n_params;
         GParameter *params = _py_midgard_parameters_from_args(props, &n_params);
 	MidgardConnection *mgd = _py_midgard_connection_singleton_get();
