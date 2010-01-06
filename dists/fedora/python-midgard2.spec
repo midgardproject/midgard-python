@@ -4,7 +4,7 @@
 
 Name:           python-midgard2
 Version:        %{major_version}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Python extension for Midgard
 
 Group:          Development/Languages
