@@ -688,18 +688,7 @@ PyTypeObject *__new_object_struct(const gchar *typename)
 	PyTypeObject *ot = g_new0(PyTypeObject, 1);
 	ot->ob_refcnt = 1;
 	ot->ob_type = NULL;
-
-	/* Remove midgard_ prefix from class name as those are already used in midgard namespace */
-	if (g_str_has_prefix (typename, "midgard_")) {
-		
-		gchar **spltd = g_strsplit (typename, "_", 2);		
-		ot->tp_name = g_strdup(spltd[1]);
-		g_strfreev (spltd);
-
-	} else {
-
-		ot->tp_name = g_strdup (typename);
-	}
+	ot->tp_name = g_strdup (typename);
 
 	ot->ob_size = 0;
 	ot->tp_basicsize = sizeof(PyGObject);
