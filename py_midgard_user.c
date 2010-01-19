@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2007, 2009 Piotr Pokora <piotrek.pokora@gmail.com>
+ * Copyright (C) 2007, 2009, 2010 Piotr Pokora <piotrek.pokora@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published
@@ -287,6 +287,19 @@ pymidgard_user_update(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
+pymidgard_user_delete (PyGObject *self, PyObject *args)
+{
+	USER_DEBUG ("delete");
+
+	MidgardUser *user = MIDGARD_USER (self->obj);
+
+	if (midgard_user_delete (user))
+		Py_RETURN_TRUE;
+
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
 pymidgard_user_set_person(PyGObject *self, PyObject *args)
 {
 	USER_DEBUG("set_person");
@@ -314,6 +327,7 @@ static PyMethodDef pymidgard_user_methods[] = {
 	{ "query", (PyCFunction)pymidgard_user_query, METH_VARARGS | METH_STATIC },
 	{ "create", (PyCFunction)pymidgard_user_create, METH_NOARGS },
 	{ "update", (PyCFunction)pymidgard_user_update, METH_NOARGS },
+	{ "delete", (PyCFunction)pymidgard_user_delete, METH_NOARGS },
 	{ "auth", (PyCFunction)pymidgard_user_auth, METH_VARARGS | METH_STATIC },
 	{ "is_user", (PyCFunction)pymidgard_user_is_user, METH_VARARGS },
 	{ "is_admin", (PyCFunction)pymidgard_user_is_admin, METH_VARARGS },
