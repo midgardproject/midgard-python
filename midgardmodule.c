@@ -289,12 +289,6 @@ init_midgard(void)
 	tuple = Py_BuildValue("i", 0);
 	d = PyModule_GetDict(m);
 	PyDict_SetItemString(d, "_connection", tuple);
-
-	g_log_set_handler("GLib-GObject", G_LOG_LEVEL_MASK,
-			g_log_default_handler, NULL);
-	g_log_set_handler("GLib", G_LOG_LEVEL_MASK,
-			g_log_default_handler, NULL);
-	g_log_set_always_fatal(G_LOG_LEVEL_CRITICAL);
 }
 
 /* ROUTINES */
