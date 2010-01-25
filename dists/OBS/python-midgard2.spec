@@ -1,4 +1,4 @@
-%define major_version 9.09.1
+%define major_version 9.09.2
 
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
