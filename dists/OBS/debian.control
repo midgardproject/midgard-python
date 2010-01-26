@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Piotr Pokora <piotrek.pokora@gmail.com>
 Standards-Version: 3.5.2
 Architecture: any
+Homepage: http://www.midgard-project.org
 Build-Depends: debhelper (>=4.0), libmidgard2-dev (>=9.09.99), python-dev, python-gobject-dev, python-support, cdbs, python-all-dev, python-setuptools
 
 Package: python-midgard2
