@@ -1,7 +1,7 @@
 #! /usr/bin/make -f
 
 #export DH_VERBOSE=1
-export DH_COMPAT=4
+export DH_COMPAT=5
 export DH_OPTIONS
 
 DEB_PYTHON_SYSTEM := pysupport
@@ -59,9 +59,9 @@ binary-arch: install
 	dh_strip
 	dh_compress
 	dh_fixperms
-	dh_installdeb
+	dh_shlibdeps -L libmidgard2-2009
 	dh_makeshlibs
-	dh_shlibdeps -L libmidgard9.3
+	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

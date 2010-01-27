@@ -1,3 +1,12 @@
+midgard-python (9.09.2-3) unstable; urgency=low
+
+  * Fixed debian-rules-sets-DH_COMPAT line 4
+  * Fixed debian-rules-calls-debhelper-in-odd-order dh_makeshlibs
+  * Fixed debhelper-but-no-misc-depends python-midgard2
+  * Fixed ancient-standards-version 3.5.2 (current is 3.8.3)
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Mon, 28 Jan 2010 08:25:41 +0100
+
 midgard-python (9.09.2-2) unstable; urgency=low
 
   * Added Homepage field in source section. 
