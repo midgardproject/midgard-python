@@ -1,0 +1,65 @@
+#! /usr/bin/make -f
+
+#export DH_VERBOSE=1
+export DH_OPTIONS
+
+DEB_PYTHON_SYSTEM := pysupport
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+PYDEF=$(shell pyversions -d)
+PYVERS=$(shell pyversions -r)
+
+DEB_BUILD_ARCH   ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+
+switch-arch:
+	sed -e 's/Architecture: any/Architecture: ${DEB_BUILD_ARCH}/g' debian/control > control.dummy
+	mv control.dummy debian/control
+
+clean::
+	dh_testdir
+	rm -rf build-stamp build
+	dh_clean
+
+build: build-stamp	
+build-stamp:
+	dh_testdir
+	set -e; \
+		for python in $(PYVERS); do \
+		$$python setup.py build; \
+	done
+	touch build-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	
+	set -e; \
+	for python in $(PYVERS); do \
+		$$python setup.py install --root=debian/python-midgard2; \
+	done
+	
+# nothing to do
+binary-indep: DH_OPTIONS=-i
+binary-indep:
+
+binary-indep: DH_OPTIONS=-a
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installdocs	
+	dh_installchangelogs
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_shlibdeps -L libmidgard2-2009
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary:	switch-arch binary-indep binary-arch 
+.PHONY: switch-arch binary binary-arch binary-indep clean build 
