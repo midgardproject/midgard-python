@@ -1,4 +1,4 @@
-Source: midgard-python
+Source: python-midgard2
 Section: python
 Priority: optional
 Maintainer: Piotr Pokora <piotrek.pokora@gmail.com>

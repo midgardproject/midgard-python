@@ -1,8 +1,14 @@
+python-midgard2 (9.09.2-5) unstable; urgency=low
+
+  * Renamed source package name which fixes native-package-with-dash-version
+
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Thu, 28 Jan 2010 08:39:06 +0100
+
 midgard-python (9.09.2-4) unstable; urgency=low
 
   * Added debian/compat 
 
- -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 28 Jan 2010 13:50:54 +0100
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 27 Jan 2010 13:50:54 +0100
 
 midgard-python (9.09.2-3) unstable; urgency=low
 
@@ -11,7 +17,7 @@ midgard-python (9.09.2-3) unstable; urgency=low
   * Fixed debhelper-but-no-misc-depends python-midgard2
   * Fixed ancient-standards-version 3.5.2 (current is 3.8.3)
 
- -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 28 Jan 2010 08:25:41 +0100
+ -- Piotr Pokora <piotrek.pokora@gmail.com>  Wed, 27 Jan 2010 08:25:41 +0100
 
 midgard-python (9.09.2-2) unstable; urgency=low
 
