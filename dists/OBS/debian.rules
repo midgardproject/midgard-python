@@ -17,6 +17,11 @@ switch-arch:
 	sed -e 's/Architecture: any/Architecture: ${DEB_BUILD_ARCH}/g' debian/control > control.dummy
 	mv control.dummy debian/control
 
+clean::
+	dh_testdir
+	rm -rf build-stamp build
+	dh_clean
+
 build: build-stamp	
 build-stamp:
 	dh_testdir
@@ -26,18 +31,9 @@ build-stamp:
 	done
 	touch build-stamp
 
-clean::
-	dh_testdir
-	for python in $(PYVERS); do \
-		$$python setup.py clean; \
-	done
-	rm -rf build-stamp build
-	dh_clean
-
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
 	dh_installdirs
 	
 	set -e; \
@@ -66,4 +62,4 @@ binary-arch: install
 	dh_builddeb
 
 binary:	switch-arch binary-indep binary-arch 
-.PHONY: switch-arch binary binary-arch binary-indep clean build
+.PHONY: switch-arch binary binary-arch binary-indep clean build 
