@@ -617,8 +617,15 @@ _py_midgard_get_object_attribute(PyObject *self, PyObject *attr)
 	g_object_get_property(object, attr_name, &pval);
 
 	PyObject *pvalue = py_midgard_pyobject_from_gvalue((const GValue*) &pval, FALSE);
-	if (!G_VALUE_HOLDS_OBJECT (&pval))
-		g_value_unset(&pval);
+
+	/* Increase reference so object is not destroyed in g_value_unset */
+	if (G_VALUE_HOLDS_OBJECT (&pval)) 
+		g_object_ref (g_value_get_object (&pval));
+	
+	g_value_unset(&pval);
+
+	/* TODO, increase reference to object if it's destroyed in particular scope */
+
 	return pvalue;
 }
 
