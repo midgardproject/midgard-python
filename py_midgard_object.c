@@ -98,8 +98,8 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_metadata_Type = {
     "metadata",                   /* tp_name */
     sizeof(PyGObject),          /* tp_basicsize */
     0,                                 /* tp_itemsize */
-    /* methods */
-    (destructor)_py_midgard_gobject_destructor,        /* tp_dealloc */
+    /* methods */ 
+    (destructor)0, /* tp_dealloc */ /* Do not set explicit destructor, metadata will be destroyed with object it belongs to */
     (printfunc)0,                      /* tp_print */
     (getattrfunc)0,       /* tp_getattr */
     (setattrfunc)0,       /* tp_setattr */
@@ -616,12 +616,7 @@ _py_midgard_get_object_attribute(PyObject *self, PyObject *attr)
 	g_value_init(&pval, pspec->value_type);
 	g_object_get_property(object, attr_name, &pval);
 
-	PyObject *pvalue = py_midgard_pyobject_from_gvalue((const GValue*) &pval, FALSE);
-
-	/* Increase reference so object is not destroyed in g_value_unset */
-	if (G_VALUE_HOLDS_OBJECT (&pval)) 
-		g_object_ref (g_value_get_object (&pval));
-	
+	PyObject *pvalue = py_midgard_pyobject_from_gvalue((const GValue*) &pval, FALSE);	
 	g_value_unset(&pval);
 
 	/* TODO, increase reference to object if it's destroyed in particular scope */

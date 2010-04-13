@@ -502,7 +502,7 @@ void
 _py_midgard_gobject_destructor (PyObject *self)
 {	
 	PyGObject *pygobj = (PyGObject *) self;
-	if (pygobj->obj && G_IS_OBJECT (pygobj->obj))
+	if (pygobj->obj && G_IS_OBJECT (pygobj->obj)) 
 		g_object_unref (pygobj->obj);
 
 	PyObject_GC_Del (self);
