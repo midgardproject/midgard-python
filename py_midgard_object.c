@@ -99,7 +99,7 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_metadata_Type = {
     sizeof(PyGObject),          /* tp_basicsize */
     0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)_py_midgard_gobject_destructor,        /* tp_dealloc */
+    (destructor)0,        /* tp_dealloc */
     (printfunc)0,                      /* tp_print */
     (getattrfunc)0,       /* tp_getattr */
     (setattrfunc)0,       /* tp_setattr */
