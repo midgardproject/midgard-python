@@ -81,32 +81,6 @@ __user_constructor(PyGObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyObject *
-pymidgard_user_auth(PyGObject *self, PyObject *args) 
-{
-	USER_DEBUG("auth");
-	const gchar *login, *pass, *sitegroup;
-	gboolean trusted = FALSE;
-	if(!PyArg_ParseTuple(args, "ss|zb", &login, &pass, &sitegroup, &trusted))
-		return NULL;
-
-	MidgardConnection *mgd = 
-		_py_midgard_connection_singleton_get();
-
-	MidgardUser *user = 
-		midgard_user_auth(mgd, login, pass, sitegroup, trusted);
-
-	if(user == NULL)
-		Py_RETURN_NONE;
-	
-	GValue gval = {0, };
-	g_value_init(&gval, G_TYPE_OBJECT);
-	g_value_set_object(&gval, G_OBJECT(user));
-	PyObject *pval = pyg_value_as_pyobject((const GValue *)&gval, FALSE);
-	
-	return pval;
-}
-
-static PyObject *
 pymidgard_user_is_user(PyGObject *self, PyObject *args)
 {
 	USER_DEBUG("is_user");
@@ -209,24 +183,24 @@ pymidgard_user_get(PyGObject *self, PyObject *args)
 static PyObject *
 pymidgard_user_log_in(PyGObject *self, PyObject *args)
 {
-	USER_DEBUG("login");
-g_print ("LOGIN ");	
+	USER_DEBUG("log_in");
+
 	MidgardUser *user = MIDGARD_USER(self->obj);
 
-	if(midgard_user_login(user))
+	if(midgard_user_log_in(user))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
 }
 
 static PyObject *
-pymidgard_user_logout(PyGObject *self, PyObject *args)
+pymidgard_user_log_out(PyGObject *self, PyObject *args)
 {
-	USER_DEBUG("logout");
+	USER_DEBUG("log_out");
 	
 	MidgardUser *user = MIDGARD_USER(self->obj);
 
-	if(midgard_user_logout(user))
+	if(midgard_user_log_out(user))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -323,12 +297,11 @@ pymidgard_user_set_person(PyGObject *self, PyObject *args)
 static PyMethodDef pymidgard_user_methods[] = {
 	{ "get", (PyCFunction)pymidgard_user_get, METH_VARARGS | METH_STATIC },
 	{ "log_in", (PyCFunction)pymidgard_user_log_in, METH_NOARGS },
-	{ "logout", (PyCFunction)pymidgard_user_logout, METH_NOARGS },
+	{ "log_out", (PyCFunction)pymidgard_user_log_out, METH_NOARGS },
 	{ "query", (PyCFunction)pymidgard_user_query, METH_VARARGS | METH_STATIC },
 	{ "create", (PyCFunction)pymidgard_user_create, METH_NOARGS },
 	{ "update", (PyCFunction)pymidgard_user_update, METH_NOARGS },
 	{ "delete", (PyCFunction)pymidgard_user_delete, METH_NOARGS },
-	{ "auth", (PyCFunction)pymidgard_user_auth, METH_VARARGS | METH_STATIC },
 	{ "is_user", (PyCFunction)pymidgard_user_is_user, METH_VARARGS },
 	{ "is_admin", (PyCFunction)pymidgard_user_is_admin, METH_VARARGS },
 	{ "set_active", (PyCFunction)pymidgard_user_set_active, METH_VARARGS },
