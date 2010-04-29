@@ -37,21 +37,29 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_storage_Type;
 	if (!mgd) { \
 		g_warning("Underlying midgard connection not found"); \
 		return NULL; \
-	} \
-	MidgardDBObjectClass *dbklass = g_type_class_peek(g_type_from_name(classname)); \
-	if (!dbklass) { \
-		g_warning("%s is no tregistered as midgard_dbobject derived class", classname); \
-		return NULL; \
-	}
+	} 
 
 static PyObject *
-pymidgard_storage_create_class_storage(PyGObject *self, PyObject *args) 
+pymidgard_storage_create_class_storage (PyGObject *self, PyObject *args) 
 {	
 	STORAGE_DEBUG("create_class_storage");
 	
 	__STORAGE_FUNC
 
-	if (midgard_storage_create_class_storage(mgd, dbklass))
+	if (midgard_storage_create (mgd, classname))
+		Py_RETURN_TRUE;
+
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_storage_create (PyGObject *self, PyObject *args) 
+{	
+	STORAGE_DEBUG("create");
+	
+	__STORAGE_FUNC
+
+	if (midgard_storage_create (mgd, classname))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -64,20 +72,46 @@ pymidgard_storage_update_class_storage(PyGObject *self, PyObject *args)
 	
 	__STORAGE_FUNC
 
-	if (midgard_storage_update_class_storage(mgd, dbklass))
+	if (midgard_storage_update (mgd, classname))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
 }
 
 static PyObject *
-pymidgard_storage_delete_class_storage(PyGObject *self, PyObject *args) 
+pymidgard_storage_update (PyGObject *self, PyObject *args) 
+{	
+	STORAGE_DEBUG("update");
+	
+	__STORAGE_FUNC
+
+	if (midgard_storage_update (mgd, classname))
+		Py_RETURN_TRUE;
+
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_storage_delete_class_storage (PyGObject *self, PyObject *args) 
 {	
 	STORAGE_DEBUG("delete_class_storage");
 	
 	__STORAGE_FUNC
 
-	if (midgard_storage_delete_class_storage(mgd, dbklass))
+	if (midgard_storage_delete (mgd, classname))
+		Py_RETURN_TRUE;
+
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_storage_delete (PyGObject *self, PyObject *args) 
+{	
+	STORAGE_DEBUG("delete");
+	
+	__STORAGE_FUNC
+
+	if (midgard_storage_delete (mgd, classname))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -90,7 +124,20 @@ pymidgard_storage_class_storage_exists(PyGObject *self, PyObject *args)
 	
 	__STORAGE_FUNC
 
-	if (midgard_storage_class_storage_exists(mgd, dbklass))
+	if (midgard_storage_exists (mgd, classname))
+		Py_RETURN_TRUE;
+
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_storage_exists (PyGObject *self, PyObject *args) 
+{	
+	STORAGE_DEBUG("exists");
+	
+	__STORAGE_FUNC
+
+	if (midgard_storage_exists (mgd, classname))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -111,64 +158,17 @@ pymidgard_storage_create_base_storage(PyGObject *self, PyObject *args)
 
 }
 
-static int __py_midgard_parse_dbobject(PyObject *object)
-{
-	PyObject *pclass = NULL, *pcname = NULL;
-	int ret = 0;
-	
-	pclass = PyObject_GetAttrString(object, "__class__");
-	if (!pclass) {
-
-		PyErr_SetString(PyExc_TypeError, "Didn't find a class for given argument object.");
-		return ret;
-	}
-
-	pcname = PyObject_GetAttrString(pclass, "__name__");
-	if(!pcname) {
-
-		PyErr_SetString(PyExc_TypeError, "Didn't find a class name for given argument object.");
-		return ret;
-	}
-
-	GType type = g_type_from_name(PyString_AS_STRING(pcname));
-
-	if(!type) {
-		
-		PyErr_SetString(PyExc_TypeError, "Expected argument object registered in GType system.");
-		return ret;
-	}
-
-	if(g_type_parent(type) != MIDGARD_TYPE_DBOBJECT) {
-
-		if(g_type_parent(type) != MIDGARD_TYPE_OBJECT) {
-		
-			PyErr_SetString(PyExc_TypeError, "Expected argument of type midgard_dbobject (or derived class).");
-			ret = 0;
-		
-		} else {
-
-			ret = 1;
-		}
-	}
-
-	if(ret == 1) {
-
-		if(G_OBJECT(((PyGObject *)object)->obj) == NULL) {
-			
-			PyErr_SetString(PyExc_TypeError, "Can not find underlying GObject object.");
-			ret = 0;
-		}
-	}
-
-	return ret;
-}
-
 static PyMethodDef pymidgard_storage_methods[] = {
 	{ "create_base_storage", (PyCFunction)pymidgard_storage_create_base_storage, METH_NOARGS | METH_STATIC},
 	{ "create_class_storage", (PyCFunction)pymidgard_storage_create_class_storage, METH_VARARGS | METH_STATIC},
+	{ "create", (PyCFunction)pymidgard_storage_create, METH_VARARGS | METH_STATIC},
 	{ "update_class_storage", (PyCFunction)pymidgard_storage_update_class_storage, METH_VARARGS | METH_STATIC},
+	{ "update", (PyCFunction)pymidgard_storage_update, METH_VARARGS | METH_STATIC},
 	{ "delete_class_storage", (PyCFunction)pymidgard_storage_delete_class_storage, METH_VARARGS | METH_STATIC},
+	{ "delete", (PyCFunction)pymidgard_storage_delete, METH_VARARGS | METH_STATIC},
 	{ "class_storage_exists", (PyCFunction)pymidgard_storage_class_storage_exists, METH_VARARGS | METH_STATIC},
+	{ "exists", (PyCFunction)pymidgard_storage_exists, METH_VARARGS | METH_STATIC},
+
 	{ NULL, NULL, 0 }
 };
 
