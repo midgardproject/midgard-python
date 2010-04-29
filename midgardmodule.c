@@ -65,6 +65,7 @@ py_midgard_register_classes(PyObject *d)
 	py_midgard_dbus_register_class(d, &PyGObject_Type);
 	py_midgard_transaction_register_class(d, &PyGObject_Type);
 	py_midgard_storage_register_class(d, &PyGObject_Type);
+	py_midgard_reflector_object_register_class(d, &PyGObject_Type);
 
 	py_midgard_object_class_register_class(d, &PyGObject_Type);
 

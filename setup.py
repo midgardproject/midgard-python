@@ -49,6 +49,7 @@ setup(
                 "py_midgard_object_parameter.c",
                 "py_midgard_query_builder.c",
                 "py_midgard_reflection_property.c",
+		"py_midgard_reflector_object.c",
                 "py_midgard_replicator.c",
                 "py_midgard_storage.c",
                 "py_midgard_transaction.c",
