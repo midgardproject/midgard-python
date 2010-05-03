@@ -73,20 +73,12 @@ pymidgard_replicator_export_purged(PyGObject *self, PyObject *args)
 	const gchar *classname, *startdate = NULL, *enddate = NULL;
 
 	if(!PyArg_ParseTuple(args, "s|ss", &classname, &startdate, &enddate))
-		return NULL;
-	
-	MidgardObjectClass *klass = 
-		MIDGARD_OBJECT_GET_CLASS_BY_NAME(classname);
-
-	if(!klass) { 
-		PyErr_SetString(PyExc_SystemError, "Can not replicate object. Invalid class name");
-		return NULL;
-	}
+		return NULL;	
 
 	MidgardConnection *mgd = 
 		_py_midgard_connection_singleton_get();
 
-	gchar *xml = midgard_replicator_export_purged (mgd, klass, startdate, enddate);
+	gchar *xml = midgard_replicator_export_purged (mgd, classname, startdate, enddate);
 	
 	PyObject *ret = Py_BuildValue("s", xml);
 	g_free(xml);
