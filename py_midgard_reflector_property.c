@@ -30,7 +30,7 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_rp_Type;
         CLASS_METHOD_DEBUG(Pymidgard_rp_Type.tp_name, __name);
 
 static int
-__reflection_property_constructor(PyGObject *self, PyObject *args, PyObject *kwargs)
+__reflector_property_constructor(PyGObject *self, PyObject *args, PyObject *kwargs)
 {
 	MRP_DEBUG("__init__");
 	const gchar *classname;
@@ -38,12 +38,8 @@ __reflection_property_constructor(PyGObject *self, PyObject *args, PyObject *kwa
 	if(!PyArg_ParseTuple(args, "s", &classname))
 		return -1;
 
-	GObjectClass *klass = g_type_class_peek(g_type_from_name(classname));
-	if(klass == NULL)
-		return -1; /* FIXME throw exception */
-
-	MidgardReflectionProperty *mrp = 
-		midgard_reflection_property_new(MIDGARD_DBOBJECT_CLASS(klass));
+	MidgardReflectorProperty *mrp = 
+		midgard_reflector_property_new(classname);
 
 	if(!mrp) return -1;
 
@@ -53,7 +49,7 @@ __reflection_property_constructor(PyGObject *self, PyObject *args, PyObject *kwa
 }
 
 static PyObject *
-pymidgard_reflection_property_get_midgard_type(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_get_midgard_type(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("get_midgard_type");
 	const gchar *name;
@@ -61,14 +57,14 @@ pymidgard_reflection_property_get_midgard_type(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	GType mtype = midgard_reflection_property_get_midgard_type(mrp, name);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	GType mtype = midgard_reflector_property_get_midgard_type(mrp, name);
 	
 	return Py_BuildValue("i", (int)mtype);
 }
 
 static PyObject *
-pymidgard_reflection_property_is_link(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_is_link(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("is_link");
 	const gchar *name;
@@ -76,15 +72,15 @@ pymidgard_reflection_property_is_link(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	if(midgard_reflection_property_is_link(mrp, name))
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_is_link(mrp, name))
 		Py_RETURN_TRUE;
 	
 	Py_RETURN_FALSE;
 }
 
 static PyObject *
-pymidgard_reflection_property_is_linked(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_is_linked(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("is_linked");
 	const gchar *name;
@@ -92,15 +88,15 @@ pymidgard_reflection_property_is_linked(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	if(midgard_reflection_property_is_linked(mrp, name))
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_is_linked(mrp, name))
 		Py_RETURN_TRUE;
 	
 	Py_RETURN_FALSE;
 }
 
 static PyObject *
-pymidgard_reflection_property_get_link_class(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_get_link_class(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("get_link_class");
 	const gchar *name;
@@ -108,8 +104,8 @@ pymidgard_reflection_property_get_link_class(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	const MidgardDBObjectClass *klass = midgard_reflection_property_get_link_class(mrp, name);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	const MidgardDBObjectClass *klass = midgard_reflector_property_get_link_class(mrp, name);
 	
 	if(klass == NULL)
 		Py_RETURN_NONE;
@@ -118,7 +114,7 @@ pymidgard_reflection_property_get_link_class(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_reflection_property_get_link_name(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_get_link_name(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("get_link_name");
 	const gchar *name;
@@ -126,9 +122,9 @@ pymidgard_reflection_property_get_link_name(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
 	const gchar *lname = 
-		midgard_reflection_property_get_link_name(mrp, name);
+		midgard_reflector_property_get_link_name(mrp, name);
 
 	if(lname == NULL)
 		Py_RETURN_NONE;
@@ -137,7 +133,7 @@ pymidgard_reflection_property_get_link_name(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_reflection_property_get_link_target(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_get_link_target(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("get_link_target");
 	const gchar *name;
@@ -145,9 +141,9 @@ pymidgard_reflection_property_get_link_target(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
 	const gchar *target = 
-		midgard_reflection_property_get_link_target(mrp, name);
+		midgard_reflector_property_get_link_target(mrp, name);
 
 	if(target == NULL)
 		Py_RETURN_NONE;
@@ -156,7 +152,7 @@ pymidgard_reflection_property_get_link_target(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_reflection_property_description(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_description(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("description");
 	const gchar *name;
@@ -164,9 +160,9 @@ pymidgard_reflection_property_description(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
 	const gchar *description = 
-		midgard_reflection_property_description(mrp, name);
+		midgard_reflector_property_description(mrp, name);
 
 	if(description == NULL)
 		Py_RETURN_NONE;
@@ -175,7 +171,7 @@ pymidgard_reflection_property_description(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_reflection_property_get_user_value(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_get_user_value(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("get_user_value");
 	const gchar *property;
@@ -184,8 +180,8 @@ pymidgard_reflection_property_get_user_value(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "ss", &property, &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	const gchar *value = midgard_reflection_property_get_user_value(mrp, property, name);
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	const gchar *value = midgard_reflector_property_get_user_value(mrp, property, name);
 
   	if(value == NULL)
 		Py_RETURN_NONE;
@@ -194,7 +190,7 @@ pymidgard_reflection_property_get_user_value(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
-pymidgard_reflection_property_is_private(PyGObject *self, PyObject *args) 
+pymidgard_reflector_property_is_private(PyGObject *self, PyObject *args) 
 {
 	MRP_DEBUG("is_private");
 	const gchar *name;
@@ -202,30 +198,100 @@ pymidgard_reflection_property_is_private(PyGObject *self, PyObject *args)
 	if(!PyArg_ParseTuple(args, "s", &name))
 		return NULL;
 
-	MidgardReflectionProperty *mrp = MIDGARD_REFLECTION_PROPERTY(self->obj);
-	if(midgard_reflection_property_is_private(mrp, name))
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_is_private(mrp, name))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_reflector_property_is_primary(PyGObject *self, PyObject *args) 
+{
+	const gchar *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return NULL;
+
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_is_primary(mrp, name))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_reflector_property_is_unique(PyGObject *self, PyObject *args) 
+{
+	const gchar *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return NULL;
+
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_is_unique(mrp, name))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_reflector_property_get_default_value(PyGObject *self, PyObject *args) 
+{
+	const gchar *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return NULL;
+
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	GValue dvalue = {0, };
+	gboolean ret = midgard_reflector_property_get_default_value(mrp, name, &dvalue);
+
+	if (!ret)
+		Py_RETURN_NONE;
+
+	PyObject *rv = pyg_value_as_pyobject((const GValue *)&dvalue, FALSE);
+	g_value_unset (&dvalue);
+
+	return rv;
+}
+
+static PyObject *
+pymidgard_reflector_property_has_default_value(PyGObject *self, PyObject *args) 
+{
+	const gchar *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return NULL;
+
+	MidgardReflectorProperty *mrp = MIDGARD_REFLECTOR_PROPERTY(self->obj);
+	if(midgard_reflector_property_has_default_value(mrp, name))
 		Py_RETURN_TRUE;
 	
 	Py_RETURN_FALSE;
 }
 
 static PyMethodDef pymidgard_rp_methods[] = {
-	{ "get_midgard_type", (PyCFunction)pymidgard_reflection_property_get_midgard_type, METH_VARARGS },
-	{ "is_link", (PyCFunction)pymidgard_reflection_property_is_link, METH_VARARGS },
-	{ "is_linked", (PyCFunction)pymidgard_reflection_property_is_linked, METH_VARARGS },
-	{ "get_link_class", (PyCFunction)pymidgard_reflection_property_get_link_class, METH_VARARGS },
-	{ "get_link_name", (PyCFunction)pymidgard_reflection_property_get_link_name, METH_VARARGS },
-	{ "get_link_target", (PyCFunction)pymidgard_reflection_property_get_link_target, METH_VARARGS },
-	{ "description", (PyCFunction)pymidgard_reflection_property_description, METH_VARARGS },
-	{ "get_user_value", (PyCFunction)pymidgard_reflection_property_get_user_value, METH_VARARGS },
-	{ "is_private", (PyCFunction)pymidgard_reflection_property_is_private, METH_VARARGS },
+	{ "description", (PyCFunction)pymidgard_reflector_property_description, METH_VARARGS },
+	{ "get_midgard_type", (PyCFunction)pymidgard_reflector_property_get_midgard_type, METH_VARARGS },
+	{ "is_link", (PyCFunction)pymidgard_reflector_property_is_link, METH_VARARGS },
+	{ "is_linked", (PyCFunction)pymidgard_reflector_property_is_linked, METH_VARARGS },
+	{ "get_link_class", (PyCFunction)pymidgard_reflector_property_get_link_class, METH_VARARGS },
+	{ "get_link_name", (PyCFunction)pymidgard_reflector_property_get_link_name, METH_VARARGS },
+	{ "get_link_target", (PyCFunction)pymidgard_reflector_property_get_link_target, METH_VARARGS },
+	{ "get_user_value", (PyCFunction)pymidgard_reflector_property_get_user_value, METH_VARARGS },
+	{ "get_default_value", (PyCFunction)pymidgard_reflector_property_get_default_value, METH_VARARGS },
+	{ "has_default_value", (PyCFunction)pymidgard_reflector_property_has_default_value, METH_VARARGS },
+	{ "is_private", (PyCFunction)pymidgard_reflector_property_is_private, METH_VARARGS },
+	{ "is_primary", (PyCFunction)pymidgard_reflector_property_is_primary, METH_VARARGS },
+	{ "is_unique", (PyCFunction)pymidgard_reflector_property_is_unique, METH_VARARGS },
 	{ NULL, NULL, 0 }
 };
 
 PyTypeObject G_GNUC_INTERNAL Pymidgard_rp_Type = {
     PyObject_HEAD_INIT(NULL)
     0,                                 /* ob_size */
-    "reflection_property",                   /* tp_name */
+    "reflector_property",                   /* tp_name */
     sizeof(PyGObject),          /* tp_basicsize */
     0,                                 /* tp_itemsize */
     /* methods */
@@ -260,19 +326,19 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_rp_Type = {
     (descrgetfunc)0,    /* tp_descr_get */
     (descrsetfunc)0,    /* tp_descr_set */
     offsetof(PyGObject, inst_dict),                 /* tp_dictoffset */
-    (initproc)__reflection_property_constructor,             /* tp_init */
+    (initproc)__reflector_property_constructor,             /* tp_init */
     (allocfunc)0,           /* tp_alloc */
     (newfunc)0,               /* tp_new */
     (freefunc)0,             /* tp_free */
     (inquiry)0              /* tp_is_gc */
 };
 
-void py_midgard_reflection_property_register_class(
+void py_midgard_reflector_property_register_class(
 		PyObject *d, gpointer pygobject_type)
 {
 	pygobject_register_class(d, 
-			"reflection_property", 
-			MIDGARD_TYPE_REFLECTION_PROPERTY, 
+			"reflector_property", 
+			MIDGARD_TYPE_REFLECTOR_PROPERTY, 
 			&Pymidgard_rp_Type, 
 			Py_BuildValue("(O)", pygobject_type));
 }

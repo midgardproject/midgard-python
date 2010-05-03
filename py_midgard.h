@@ -41,7 +41,7 @@ extern void py_midgard_connection_register_class(PyObject *d, gpointer pygobject
 extern void py_midgard_query_builder_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_blob_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_collector_register_class(PyObject *d, gpointer pygobject_type);
-extern void py_midgard_reflection_property_register_class(PyObject *d, gpointer pygobject_type);
+extern void py_midgard_reflector_property_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_replicator_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_user_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_dbus_register_class(PyObject *d, gpointer pygobject_type);

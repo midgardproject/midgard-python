@@ -137,8 +137,7 @@ pymidgard_reflector_object_has_metadata_class (PyGObject *self, PyObject *args)
 static PyObject *
 pymidgard_reflector_object_get_metadata_class (PyGObject *self, PyObject *args) 
 {	
-	const gchar *classname;
-	const gchar *name;
+	const gchar *classname;	
 
 	if (!PyArg_ParseTuple (args, "s", &classname))
 		return NULL;
