@@ -238,6 +238,72 @@ pymidgard_connection_list_auth_types(PyGObject *self, PyObject *args)
         return list;
 }
 
+static PyObject *
+pymidgard_connection_is_enabled_replication (PyGObject *self, PyObject *args)
+{		
+	if (midgard_connection_is_enabled_replication (MIDGARD_CONNECTION(self->obj)))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_connection_is_enabled_dbus (PyGObject *self, PyObject *args)
+{		
+	if (midgard_connection_is_enabled_dbus (MIDGARD_CONNECTION(self->obj)))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_connection_is_enabled_quota (PyGObject *self, PyObject *args)
+{		
+	if (midgard_connection_is_enabled_replication (MIDGARD_CONNECTION(self->obj)))
+		Py_RETURN_TRUE;
+	
+	Py_RETURN_FALSE;
+}
+
+static PyObject *
+pymidgard_connection_enable_replication(PyGObject *self, PyObject *args)
+{
+	gboolean toggle;
+	
+	if(!PyArg_ParseTuple(args, "b", &toggle))
+		return NULL;
+	
+	midgard_connection_enable_replication(MIDGARD_CONNECTION(self->obj), toggle);
+	
+	Py_RETURN_NONE;
+}
+
+static PyObject *
+pymidgard_connection_enable_dbus(PyGObject *self, PyObject *args)
+{
+	gboolean toggle;
+	
+	if(!PyArg_ParseTuple(args, "b", &toggle))
+		return NULL;
+	
+	midgard_connection_enable_dbus(MIDGARD_CONNECTION(self->obj), toggle);
+	
+	Py_RETURN_NONE;
+}
+
+static PyObject *
+pymidgard_connection_enable_quota(PyGObject *self, PyObject *args)
+{
+	gboolean toggle;
+	
+	if(!PyArg_ParseTuple(args, "b", &toggle))
+		return NULL;
+	
+	midgard_connection_enable_quota(MIDGARD_CONNECTION(self->obj), toggle);
+	
+	Py_RETURN_NONE;
+}
+
 static PyMethodDef pymidgard_connection_methods[] = {
 	{ "open", (PyCFunction)pymidgard_connection_open, METH_VARARGS },
 	{ "open_config", (PyCFunction)pymidgard_connection_open_config, METH_VARARGS },
@@ -247,6 +313,12 @@ static PyMethodDef pymidgard_connection_methods[] = {
 	{ "get_error_string", (PyCFunction)pymidgard_connection_get_error_string, METH_VARARGS },
 	{ "get_user", (PyCFunction)pymidgard_connection_get_user, METH_VARARGS },
 	{ "list_auth_types", (PyCFunction)pymidgard_connection_list_auth_types, METH_NOARGS },
+	{ "is_enabled_replication", (PyCFunction)pymidgard_connection_is_enabled_replication, METH_NOARGS },
+	{ "is_enabled_dbus", (PyCFunction)pymidgard_connection_is_enabled_dbus, METH_NOARGS },
+	{ "is_enabled_quota", (PyCFunction)pymidgard_connection_is_enabled_quota, METH_NOARGS },
+	{ "enable_quota", (PyCFunction)pymidgard_connection_enable_quota, METH_VARARGS },
+	{ "enable_replication", (PyCFunction)pymidgard_connection_enable_replication, METH_VARARGS },
+	{ "enable_dbus", (PyCFunction)pymidgard_connection_enable_dbus, METH_VARARGS },
 	{ NULL, NULL, 0 }
 };
 
