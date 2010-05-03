@@ -52,6 +52,7 @@ extern void py_midgard_view_register_class(PyObject *d, gpointer pygobject_type)
 extern void py_midgard_key_config_context_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_key_config_file_context_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_reflector_object_register_class(PyObject *d, gpointer pygobject_type);
+extern void py_midgard_schema_object_tree_register_class(PyObject *d, gpointer pygobject_type);
 
 /* PARAMETERS */
 extern PyObject *pymidgard_object_get_parameter(PyGObject *self, PyObject *args);

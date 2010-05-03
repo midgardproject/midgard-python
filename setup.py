@@ -52,6 +52,7 @@ setup(
 		"py_midgard_reflector_object.c",
                 "py_midgard_replicator.c",
                 "py_midgard_storage.c",
+		"py_midgard_schema_object_tree.c",
                 "py_midgard_transaction.c",
                 "py_midgard_user.c",
                 "py_midgard_view.c",

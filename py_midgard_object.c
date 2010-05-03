@@ -275,12 +275,13 @@ static PyObject *
 pymidgard_object_delete(PyGObject *self, PyObject *args)
 {
 	MGDOBJECT_DEBUG("delete");
-	if(!PyArg_ParseTuple(args, ""))
+	gboolean check_dependents = FALSE;
+	if(!PyArg_ParseTuple(args, "|b", &check_dependents))
 		return NULL;
 
 	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
-	if(midgard_object_delete(mobj))
+	if(midgard_object_delete(mobj, check_dependents))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -290,46 +291,13 @@ static PyObject *
 pymidgard_object_purge(PyGObject *self, PyObject *args)
 {
 	MGDOBJECT_DEBUG("purge");
-	if(!PyArg_ParseTuple(args, ""))
+	gboolean check_dependents;
+	if(!PyArg_ParseTuple(args, "|b", &check_dependents))
 		return NULL;
 
 	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
 
-	if(midgard_object_purge(mobj))
-		Py_RETURN_TRUE;
-
-	Py_RETURN_FALSE;
-}
-
-static PyObject *
-pymidgard_object_is_in_parent_tree(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("is_in_parent_tree");
-	guint root_id, id;
-
-	if(!PyArg_ParseTuple(args, "ii", &root_id, &id))
-		return NULL;
-
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-
-	if(midgard_object_is_in_parent_tree(mobj, root_id, id))
-		Py_RETURN_TRUE;
-
-	Py_RETURN_FALSE;
-}
-
-static PyObject *
-pymidgard_object_is_in_tree(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("is_in_tree");
-	guint root_id, id;
-
-	if (!PyArg_ParseTuple(args, "ii", &root_id, &id))
-		return NULL;
-
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-
-	if(midgard_object_is_in_tree(mobj, root_id, id))
+	if(midgard_object_purge(mobj, check_dependents))
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
@@ -346,98 +314,6 @@ pymidgard_object_has_dependents(PyGObject *self, PyObject *args)
 		Py_RETURN_TRUE;
 
 	Py_RETURN_FALSE;
-}
-
-static PyObject *
-pymidgard_object_get_parent(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("get_parent");
-	if(!PyArg_ParseTuple(args, ""))
-		return NULL;
-	
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-	MidgardObject *parent = 
-		midgard_object_get_parent(mobj);
-	
-	if(parent) 
-		return Py_BuildValue("O", pygobject_new(G_OBJECT(parent)));
-	
-	Py_RETURN_NONE;
-}
-
-static PyObject *
-pymidgard_object_parent(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("parent");
-	if(!PyArg_ParseTuple(args, ""))
-		return NULL;
-	
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-	const gchar *parent = 
-		midgard_object_parent(mobj);
-
-	return Py_BuildValue("s", parent);	
-}
-
-static PyObject *
-pymidgard_object_list(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("list");
-	if(!PyArg_ParseTuple(args, ""))
-		return NULL;
-
-	guint i = 0;
-	guint n_objects;
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-	GObject **objects = midgard_object_list(mobj, &n_objects);
-	
-	if(objects == NULL) {
-		
-		PyObject *list = PyTuple_New(i);
-		return list;
-	}
-
-	PyObject *list = PyTuple_New(n_objects);
-
-	if(!objects) 
-		return list;
-
-	OBJECTS2LIST(objects, list);
-
-	g_free(objects);
-
-	return list;
-}
-
-static PyObject *
-pymidgard_object_list_children(PyGObject *self, PyObject *args)
-{
-	MGDOBJECT_DEBUG("list_children");
-	const gchar *childcname;
-	if(!PyArg_ParseTuple(args, "s", &childcname))
-		return NULL;
-
-	guint i = 0;
-	guint n_objects;
-	MidgardObject *mobj = MIDGARD_OBJECT(self->obj);
-	GObject **objects = midgard_object_list_children(mobj, childcname, &n_objects);
-
-	if(objects == NULL) {
-		
-		PyObject *list = PyTuple_New(i);
-		return list;
-	}
-
-	PyObject *list = PyTuple_New(n_objects);
-
-	if(!objects) 
-		return list;
-
-	OBJECTS2LIST(objects, list);
-
-	g_free(objects);
-
-	return list;
 }
 
 static PyObject *
@@ -559,12 +435,6 @@ static PyMethodDef pymidgard_object_methods[] = {
 	{ "update", (PyCFunction)pymidgard_object_update, METH_VARARGS, NULL },
 	{ "delete", (PyCFunction)pymidgard_object_delete, METH_VARARGS, NULL },	
 	{ "purge", (PyCFunction)pymidgard_object_purge, METH_VARARGS, NULL },
-	{ "is_in_parent_tree", (PyCFunction)pymidgard_object_is_in_parent_tree, METH_VARARGS },
-	{ "is_in_tree", (PyCFunction)pymidgard_object_is_in_tree, METH_VARARGS },
-	{ "get_parent", (PyCFunction)pymidgard_object_get_parent, METH_VARARGS },
-	{ "parent", (PyCFunction)pymidgard_object_parent, METH_VARARGS },
-	{ "list", (PyCFunction)pymidgard_object_list, METH_VARARGS },
-	{ "list_children", (PyCFunction)pymidgard_object_list_children, METH_VARARGS },
 	{ "has_dependents", (PyCFunction)pymidgard_object_has_dependents, METH_NOARGS },
 	{ "get_by_path", (PyCFunction)pymidgard_object_get_by_path, METH_VARARGS },
 	{ "get_parameter", (PyCFunction)pymidgard_object_get_parameter, METH_VARARGS },
