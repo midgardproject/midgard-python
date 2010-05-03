@@ -134,7 +134,7 @@ void py_midgard_schema_object_factory_register_class(
 		PyObject *d, gpointer pygobject_type)
 {
 	pygobject_register_class (d, "schema_object_factory", 
-			MIDGARD_TYPE_OBJECT, 
+			MIDGARD_TYPE_SCHEMA_OBJECT_FACTORY, 
 			&Pymidgard_schema_object_factory_Type, 
 			Py_BuildValue("(O)", pygobject_type));
 }

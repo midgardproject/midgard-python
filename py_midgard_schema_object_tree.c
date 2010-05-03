@@ -191,7 +191,7 @@ void py_midgard_schema_object_tree_register_class(
 		PyObject *d, gpointer pygobject_type)
 {
 	pygobject_register_class (d, "schema_object_tree", 
-			MIDGARD_TYPE_OBJECT, 
+			MIDGARD_TYPE_SCHEMA_OBJECT_TREE, 
 			&Pymidgard_schema_object_tree_Type, 
 			Py_BuildValue("(O)", pygobject_type));
 }

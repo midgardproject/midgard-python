@@ -240,7 +240,7 @@ void py_midgard_reflector_object_register_class(
 {
 	pygobject_register_class(d, 
 			"reflector_object", 
-			MIDGARD_TYPE_OBJECT, 
+			MIDGARD_TYPE_REFLECTOR_OBJECT, 
 			&Pymidgard_reflector_object_Type, 
 			Py_BuildValue("(O)", pygobject_type));
 }
