@@ -67,8 +67,7 @@ py_midgard_register_classes(PyObject *d)
 	py_midgard_storage_register_class(d, &PyGObject_Type);
 	py_midgard_reflector_object_register_class(d, &PyGObject_Type);
 	py_midgard_schema_object_tree_register_class(d, &PyGObject_Type);
-
-	py_midgard_object_class_register_class(d, &PyGObject_Type);
+	py_midgard_schema_object_factory_register_class(d, &PyGObject_Type);
 
 	PyTypeObject pto = py_midgard_query_builder_get_type_object();
 
