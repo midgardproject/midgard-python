@@ -18,11 +18,13 @@ include py_midgard_key_config_file.c
 include py_midgard_key_config_file_context.c
 include py_midgard_object_attachment.c
 include py_midgard_object.c
-include py_midgard_object_class.c
 include py_midgard_object_parameter.c
 include py_midgard_query_builder.c
-include py_midgard_reflection_property.c
+include py_midgard_reflector_object.c
+include py_midgard_reflector_property.c
 include py_midgard_replicator.c
+include py_midgard_schema_object_factory.c
+include py_midgard_schema_object_tree.c
 include py_midgard_storage.c
 include py_midgard_transaction.c
 include py_midgard_user.c
