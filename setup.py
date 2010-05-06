@@ -19,7 +19,7 @@ flags = PkgConfig("glib-2.0 pygobject-2.0 midgard2")
 setup(
     
     name = 'python-midgard2',
-    version = '9.09.99',
+    version = '10.05.0',
     
     author = "Midgard Project",
     author_email = "dev@lists.midgard-project.org",
