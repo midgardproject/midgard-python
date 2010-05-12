@@ -1,5 +1,9 @@
 #! /usr/bin/make -f
 
+PATH := /usr/bin:$(PATH)
+SBOX_REDIRECT_IGNORE := $(SBOX_REDIRECT_IGNORE):/usr/bin/python
+export PATH SBOX_REDIRECT_IGNORE
+
 #export DH_VERBOSE=1
 export DH_COMPAT=4
 export DH_OPTIONS
@@ -61,7 +65,7 @@ binary-arch: install
 	dh_fixperms
 	dh_installdeb
 	dh_makeshlibs
-	dh_shlibdeps -L libmidgard9.3
+	dh_shlibdeps -L libmidgard2-2010
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
