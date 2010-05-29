@@ -14,16 +14,16 @@ class PkgConfig(object):
     
 
 
-flags = PkgConfig("glib-2.0 pygobject-2.0 midgard2")
+flags = PkgConfig("glib-2.0 pygobject-2.0 midgard3")
 
 setup(
     
-    name = 'python-midgard2',
-    version = '10.05.0',
+    name = 'python-midgard3',
+    version = '10.05.99',
     
     author = "Midgard Project",
     author_email = "dev@lists.midgard-project.org",
-    description = "Python bindings for Midgard2",
+    description = "Python bindings for Midgard3",
     license = "LGPL",
     url = "http://www.midgard-project.org/",
     
