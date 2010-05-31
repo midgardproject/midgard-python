@@ -138,6 +138,13 @@ pymidgard_connection_open_config(PyGObject *self, PyObject *args)
 }
 
 static PyObject *
+pymidgard_connection_close (PyGObject *self, PyObject *args)
+{		
+	midgard_connection_close (MIDGARD_CONNECTION(self->obj));
+	Py_RETURN_NONE;
+}
+
+static PyObject *
 pymidgard_connection_is_connected (PyGObject *self, PyObject *args)
 {
 	CONNECTION_DEBUG("is_connected");
@@ -307,6 +314,7 @@ pymidgard_connection_enable_quota(PyGObject *self, PyObject *args)
 static PyMethodDef pymidgard_connection_methods[] = {
 	{ "open", (PyCFunction)pymidgard_connection_open, METH_VARARGS },
 	{ "open_config", (PyCFunction)pymidgard_connection_open_config, METH_VARARGS },
+	{ "close", (PyCFunction)pymidgard_connection_close, METH_NOARGS },
 	{ "is_connected", (PyCFunction)pymidgard_connection_is_connected, METH_NOARGS },
 	{ "set_loglevel", (PyCFunction)pymidgard_connection_set_loglevel, METH_VARARGS },
 	{ "get_error", (PyCFunction)pymidgard_connection_get_error, METH_VARARGS },
