@@ -34,6 +34,14 @@
 #endif
 
 extern guint get_global_log_handler(void);
+
+/* Midgard.Query */
+void py_midgard_query_constraint_register_classes (PyObject *d, gpointer pygobject_type);
+void py_midgard_query_holder_register_classes (PyObject *d, gpointer pygobject_type);
+void py_midgard_query_storage_register_class (PyObject *d, gpointer pygobject_type);
+void py_midgard_query_executor_register_classes (PyObject *d, gpointer pygobject_type);
+
+/* CLASSES */
 extern void py_midgard_dbobject_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_object_register_class(PyObject *d, gpointer pygobject_type);
 extern void py_midgard_config_register_class(PyObject *d, gpointer pygobject_type);

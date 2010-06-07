@@ -80,7 +80,7 @@ py_midgard_register_classes(PyObject *d)
 
 	py_midgard_key_config_context_register_class(d, &PyGObject_Type);
 	PyTypeObject *kccot = (PyTypeObject *)PyObject_GetAttrString(mmodule, "key_config_context");
-	py_midgard_key_config_file_context_register_class(d, &kccot);
+	py_midgard_key_config_file_context_register_class(d, &kccot);	
 }
 
 static void
@@ -162,6 +162,35 @@ py_midgard_register_db_classes(PyObject *d)
 	py_midgard_user_register_class(d, &PyGObject_Type);
 }
 
+void
+py_midgard_register_query_classes(PyObject *d, PyObject *qmodule)
+{
+	PyObject *module;
+	
+	if ((module = PyImport_ImportModule("gobject")) != NULL) {
+		
+		_MPyGObject_Type = (PyTypeObject *)PyObject_GetAttrString(module, "GObject");
+		
+		if (_MPyGObject_Type == NULL) {
+			
+			PyErr_SetString(PyExc_ImportError,
+					"cannot import name GObject from gobject");
+			return ;
+		}
+	
+	} else {
+		
+		PyErr_SetString(PyExc_ImportError, "could not import gobject");
+		
+		return ;
+	}
+
+	py_midgard_query_constraint_register_classes (d, &PyGObject_Type);
+	py_midgard_query_holder_register_classes (d, &PyGObject_Type);
+	py_midgard_query_storage_register_class (d, &PyGObject_Type);
+	py_midgard_query_executor_register_classes (d, &PyGObject_Type);
+}
+
 static const PyMethodDef py_midgard_functions[] = {
 	{ NULL, NULL, 0, NULL }
 };
@@ -217,7 +246,7 @@ static void py_midgard_define_constants(PyObject *m)
 DL_EXPORT(void)
 init_midgard(void)
 {
-	PyObject *m, *d, *tuple, *sm, *dm, *vm;
+	PyObject *m, *d, *tuple, *sm, *dm, *vm, *qm;
 
 	/* initialise pygobject */
 	init_pygobject_check(2, 12, 0);
@@ -283,6 +312,14 @@ init_midgard(void)
 	PyObject *vd = PyModule_GetDict(vm);
 	PyModule_AddObject(m, "view", vm);
 	py_midgard_register_view_classes(vd);
+
+	/* Query module */
+	qm = Py_InitModule("__query__", NULL);
+	if(!vm) 
+		g_warning("Failed to initialize query module");
+	PyObject *qd = PyModule_GetDict(qm);
+	PyModule_AddObject(m, "query", qm);
+	py_midgard_register_query_classes (qd, qm);
 
 	/* Globals */
 
