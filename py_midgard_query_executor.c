@@ -123,14 +123,14 @@ static PyMethodDef pymidgard_query_executor_methods[] = {
 	{ NULL, NULL, 0 }
 };
 
-PyTypeObject G_GNUC_INTERNAL Pymidgard_executor_Type = {
+PyTypeObject G_GNUC_INTERNAL Pymidgard_query_executor_Type = {
     PyObject_HEAD_INIT(NULL)
     0,                                 /* ob_size */
     "executor",                   /* tp_name */
     sizeof (PyGObject),          /* tp_basicsize */
     0,                                 /* tp_itemsize */
     /* methods */
-    (destructor)_py_midgard_gobject_destructor,  /* tp_dealloc */
+    (destructor)0,  /* tp_dealloc */
     (printfunc)0,                      /* tp_print */
     (getattrfunc)0,       /* tp_getattr */
     (setattrfunc)0,       /* tp_setattr */
@@ -142,8 +142,8 @@ PyTypeObject G_GNUC_INTERNAL Pymidgard_executor_Type = {
     (hashfunc)0,             /* tp_hash */
     (ternaryfunc)0,          /* tp_call */
     (reprfunc)0,              /* tp_str */
-    (getattrofunc)0,     /* tp_getattro */
-    (setattrofunc)0,     /* tp_setattro */
+    _py_midgard_get_object_attribute,     /* tp_getattro */
+    _py_midgard_set_object_attribute,     /* tp_setattro */
     (PyBufferProcs*)0,  /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
     NULL,                        /* Documentation string */
@@ -175,6 +175,7 @@ py_midgard_query_executor_register_class (PyObject *d, gpointer pygobject_type)
 			MIDGARD_TYPE_QUERY_EXECUTOR, &Pymidgard_query_executor_Type, 
 			Py_BuildValue ("(O)", pygobject_type));
 
+	pyg_set_object_has_new_constructor(MIDGARD_TYPE_QUERY_EXECUTOR);
 }
 
 /* QUERY SELECT */
@@ -255,7 +256,7 @@ static PyMethodDef pymidgard_query_select_methods[] = {
 PyTypeObject G_GNUC_INTERNAL Pymidgard_query_select_Type = {
     PyObject_HEAD_INIT(NULL)
     0,                                 /* ob_size */
-    "query_select",                   /* tp_name */
+    "select",                   /* tp_name */
     sizeof (PyGObject),          /* tp_basicsize */
     0,                                 /* tp_itemsize */
     /* methods */
@@ -303,7 +304,7 @@ py_midgard_query_select_register_class (PyObject *d, gpointer pygobject_type)
 	pygobject_register_class (d, "select", 
 			MIDGARD_TYPE_QUERY_SELECT, &Pymidgard_query_select_Type, 
 			Py_BuildValue ("(O)", &Pymidgard_query_executor_Type));
-
+	pyg_set_object_has_new_constructor(MIDGARD_TYPE_QUERY_SELECT);
 }
 
 /* COMMON */
@@ -312,5 +313,6 @@ void
 py_midgard_query_executor_register_classes (PyObject *d, gpointer pygobject_type)
 {
 	py_midgard_query_executor_register_class (d, pygobject_type);
+	py_midgard_query_select_register_class (d, pygobject_type);
 }
 

@@ -131,18 +131,23 @@ py_midgard_query_holder_register_interface (PyObject *d)
 
 }
 
-/* QUERY CONSTRAINT */
+/* QUERY VALUE */
 
 static int
 __qvalue_constructor (PyGObject *self, PyObject *args, PyObject *kwargs)
 {
-	PyObject *pvalue;
-	if(!PyArg_ParseTuple(args, "O", &pvalue))
+	PyObject *pvalue = NULL;
+	if(!PyArg_ParseTuple(args, "|O", &pvalue))
 		return -1;
 
-	GValue gval = gvalue_from_pyobject(pvalue);
-	py_midgard_gvalue_from_pyobject(&gval, pvalue);
-	MidgardQueryValue *qvalue = midgard_query_value_new ((const GValue *)&gval);
+	MidgardQueryValue *qvalue;
+	if (pvalue) {
+		GValue gval = gvalue_from_pyobject(pvalue);
+		py_midgard_gvalue_from_pyobject(&gval, pvalue);
+		qvalue = midgard_query_value_create_with_value ((const GValue *)&gval);
+	} else {
+		qvalue = midgard_query_value_new ();
+	}
 
 	if (!qvalue)
 		return -1;
@@ -204,7 +209,7 @@ py_midgard_query_value_register_class (PyObject *d, gpointer pygobject_type)
 	pygobject_register_class(d, "value", 
 			MIDGARD_TYPE_QUERY_VALUE, 
 			&Pymidgard_query_value_Type,
-			Py_BuildValue("(OO)", pygobject_type, &Pymidgard_query_value_Type));
+			Py_BuildValue("(OO)", pygobject_type, &Pymidgard_query_holder_Type));
 }
 
 /* QUERY PROPERTY */
@@ -217,7 +222,9 @@ __qproperty_constructor (PyGObject *self, PyObject *args, PyObject *kwargs)
 	if(!PyArg_ParseTuple(args, "s|O", &property, &pystorage))
 		return -1;
 
-	MidgardQueryStorage *storage = MIDGARD_QUERY_STORAGE (((PyGObject*) (pystorage))->obj);
+	MidgardQueryStorage *storage = NULL;
+	if (pystorage)
+		storage = MIDGARD_QUERY_STORAGE (((PyGObject*) (pystorage))->obj);
 
 	MidgardQueryProperty *qproperty = midgard_query_property_new (property, storage);
 	if (!qproperty)

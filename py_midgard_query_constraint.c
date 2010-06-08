@@ -134,7 +134,9 @@ __constraint_constructor (PyGObject *self, PyObject *args, PyObject *kwargs)
 
 	MidgardQueryProperty *property = MIDGARD_QUERY_PROPERTY (((PyGObject *) p_property)->obj);
 	MidgardQueryHolder *holder = MIDGARD_QUERY_HOLDER (((PyGObject *) p_holder)->obj);
-	MidgardQueryStorage *storage = MIDGARD_QUERY_STORAGE (((PyGObject *) p_storage)->obj);
+	MidgardQueryStorage *storage = NULL; 
+	if (p_storage)
+		storage = MIDGARD_QUERY_STORAGE (((PyGObject *) p_storage)->obj);
 
 	MidgardQueryConstraint *constraint = midgard_query_constraint_new (property, p_op, holder, storage);
 
