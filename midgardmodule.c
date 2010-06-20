@@ -466,7 +466,12 @@ void py_midgard_gvalue_from_pyobject(GValue *gvalue, const PyObject *pyvalue)
 	if (G_VALUE_TYPE(gvalue) == MGD_TYPE_TIMESTAMP) {
 	
 		MidgardTimestamp *mt = (MidgardTimestamp *) g_value_get_boxed(gvalue);
-		
+		gboolean take_bxd = FALSE;
+		if (!mt) {
+			mt = midgard_timestamp_new ();
+			take_bxd = TRUE;
+		}
+
 		PyDateTime_IMPORT;
 		mt->year = PyDateTime_GET_YEAR(pyvalue);
 		mt->month = PyDateTime_GET_MONTH(pyvalue);
@@ -474,6 +479,9 @@ void py_midgard_gvalue_from_pyobject(GValue *gvalue, const PyObject *pyvalue)
 		mt->hour = PyDateTime_DATE_GET_HOUR(pyvalue);
 		mt->minute = PyDateTime_DATE_GET_MINUTE(pyvalue);
 		mt->second = PyDateTime_DATE_GET_SECOND(pyvalue);
+
+		if (take_bxd)
+			g_value_set_boxed (gvalue, mt);
 
 	} else {
 
