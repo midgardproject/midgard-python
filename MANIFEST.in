@@ -20,6 +20,10 @@ include py_midgard_object_attachment.c
 include py_midgard_object.c
 include py_midgard_object_parameter.c
 include py_midgard_query_builder.c
+include py_midgard_query_constraint.c
+include py_midgard_query_executor.c
+include py_midgard_query_holder.c
+include py_midgard_query_storage.c
 include py_midgard_reflector_object.c
 include py_midgard_reflector_property.c
 include py_midgard_replicator.c
