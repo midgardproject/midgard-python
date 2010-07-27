@@ -339,7 +339,9 @@ guint get_global_log_handler(void)
 GValue gvalue_from_pyobject(PyObject *pyval)
 {
 	GValue value = {0, };
-	
+
+	PyDateTime_IMPORT;
+
 	if(PyString_Check(pyval)) {
 		g_value_init(&value, G_TYPE_STRING);
 		return value;
