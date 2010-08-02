@@ -79,8 +79,8 @@ pymidgard_object_set_parameter(PyGObject *self, PyObject *args)
 		GValue gval = gvalue_from_pyobject(pvalue);
 		pyg_value_from_pyobject(&gval, pvalue);
 		cvalue = g_new0(GValue, 1);
-		g_value_init(cvalue, G_VALUE_TYPE(&gval));
-		g_value_copy((const GValue *) &gval, cvalue);
+		g_value_init(cvalue, G_TYPE_STRING);
+		g_value_transform((const GValue *) &gval, cvalue);
 		g_value_unset(&gval);
 	}
 	
