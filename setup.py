@@ -19,7 +19,7 @@ flags = PkgConfig("glib-2.0 pygobject-2.0 midgard2 gthread-2.0")
 setup(
     
     name = 'python-midgard2',
-    version = '10.05.2',
+    version = '10.05.1.1',
     
     author = "Midgard Project",
     author_email = "dev@lists.midgard-project.org",
