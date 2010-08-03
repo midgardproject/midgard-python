@@ -14,12 +14,12 @@ class PkgConfig(object):
     
 
 
-flags = PkgConfig("glib-2.0 pygobject-2.0 midgard2")
+flags = PkgConfig("glib-2.0 pygobject-2.0 midgard2 gthread-2.0")
 
 setup(
     
     name = 'python-midgard2',
-    version = '10.05.0',
+    version = '10.05.2',
     
     author = "Midgard Project",
     author_email = "dev@lists.midgard-project.org",
